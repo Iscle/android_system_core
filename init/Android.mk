@@ -20,6 +20,10 @@ ifneq ($(TARGET_INIT_CONSOLE_TIMEOUT),)
 init_options += -DCONSOLE_TIMEOUT_SEC=$(TARGET_INIT_CONSOLE_TIMEOUT)
 endif
 
+ifeq ($(OLD_KERNEL),true)
+init_options += -Dold_kernel=\"$(TARGET_BOARD_PLATFORM)\"
+endif
+
 init_cflags += \
     $(init_options) \
     -Wall -Wextra \
@@ -105,6 +109,14 @@ endif
 
 ifneq ($(TARGET_INIT_UMOUNT_AND_FSCK_IS_UNSAFE),)
 LOCAL_CFLAGS += -DUMOUNT_AND_FSCK_IS_UNSAFE
+endif
+
+ifeq ($(TARGET_BOARD_PLATFORM),mt6582)
+LOCAL_CFLAGS += -DMTK_MT6582
+endif
+
+ifeq ($(TARGET_BOARD_PLATFORM),mt6592)
+LOCAL_CFLAGS += -DMTK_MT6592
 endif
 
 LOCAL_MODULE:= init
